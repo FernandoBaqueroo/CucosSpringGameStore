@@ -1,0 +1,89 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Cliente</title>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 0, 255, 0.4);
+        }
+
+        .btn i, .btn span {
+            transition: transform 0.2s ease;
+        }
+
+        .text-gray-400 {
+            color: rgba(229, 231, 235, 0.7);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-900 text-gray-200">
+
+    <div th:replace="fragments/polygonsBackground :: polygons-background"></div>
+    <header th:replace="layout/layout :: header" class="bg-gray-800 p-4 shadow-md"></header>
+
+
+    <div class="container mx-auto px-4 py-8">
+		<div class="mb-4">
+	        <a th:href="@{/form}" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+	           Crear Cliente
+	    	</a>
+    	</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" data-aos="fade-up">
+            <div th:each="cliente : ${clientes}" class="card bg-gray-800 rounded-lg shadow-lg p-5">
+                <div class="flex justify-center">
+				    <img th:if="${#strings.length(cliente.foto) > 0}" th:src="@{'/uploads/' + ${cliente.foto}}" alt="Foto del Cliente" class="rounded-full h-32 w-32 object-cover border-2 border-gray-700">
+				    <img th:unless="${#strings.length(cliente.foto) > 0}" th:src="@{/images/fotoPerfil.jpg}" alt="Foto del Cliente" class="rounded-full h-32 w-32 object-cover border-2 border-gray-700">
+				</div>
+                <div class="mt-4 text-center">
+					<a th:href="@{'/ver/' + ${cliente.id}}">
+						<h3 class="text-xl font-semibold" th:text="${cliente.nombre} + ' ' + ${cliente.apellido}"></h3>
+					</a>
+                    <p class="text-gray-400"><i class="far fa-envelope mr-2"></i><span th:text="${cliente.email}"></span></p>
+                    <p class="text-gray-400"><i class="far fa-calendar-alt mr-2"></i><span th:text="${cliente.createAt}"></span></p>
+                </div>
+                <div class="flex justify-around mt-4">
+                    <a th:href="@{'/factura/form/' + ${cliente.id}}" class="btn bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <i class="fas fa-file-invoice-dollar"></i> Crear Factura
+                    </a>
+                    <a th:href="@{/form/} + ${cliente.id}" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
+						<span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
+						 	<i class="fas fa-edit"></i>
+					      Editar
+					    </span>
+					</a>
+                    <a th:href="@{'/eliminar/' + ${cliente.id}}" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
+					    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
+					      <i class="fas fa-trash-alt"></i>
+					      Eliminar
+					    </span>
+					</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav th:replace="paginator-nav :: paginator" class="mt-8"></nav>
+    <footer th:replace="layout/layout :: footer" class="bg-gray-800 p-4 mt-8"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            startEvent: 'DOMContentLoaded',
+            easing: 'ease-out-back',
+            duration: 800,
+            once: true, 
+            anchorPlacement: 'top-bottom',
+        });
+    </script>
+</body>
+</html>

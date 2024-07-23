@@ -1,0 +1,83 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+    <meta charset="UTF-8">
+    <title>Crear Videojuego</title>
+</head>
+<style>
+        .form-input:focus {
+            outline: none;
+            border: 2px solid transparent;
+            box-shadow: 0 0 0 2px #4f46e5;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .scale-up-center {
+            animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+        }
+
+        @keyframes scale-up-center {
+            0% { transform: scale(0.5); }
+            100% { transform: scale(1); }
+        }
+    </style>
+<script src="https://cdn.tailwindcss.com"></script>
+<body class="bg-gray-900 text-gray-200 font-sans">
+    <div th:replace="fragments/polygonsBackground :: polygons-background"></div>
+
+    <header th:replace="layout/layout :: header"></header>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto bg-gray-800 shadow-lg rounded-lg overflow-hidden scale-up-center">
+            <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-6 py-4">
+                <h2 class="text-2xl font-bold text-white" th:text="${titulo}">Detalles del Videojuego</h2>
+            </div>
+            <form th:action="@{/formVideojuegos}" th:object="${videojuego}" method="post" enctype="multipart/form-data" class="p-6 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-400">Título</label>
+                        <input type="text" th:field="*{titulo}" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2" placeholder="Nombre del videojuego"/>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-400">Desarrollador</label>
+                        <input type="text" th:field="*{desarrollador}" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2" placeholder="Nombre del desarrollador"/>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-400">Plataforma</label>
+                        <input type="text" th:field="*{plataforma}" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2" placeholder="Plataforma"/>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-400">Categoría</label>
+                        <input type="text" th:field="*{categoria}" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2" placeholder="Categoría"/>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-400">Precio</label>
+                        <input type="number" th:field="*{precio}" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2" placeholder="Precio del videojuego"/>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-400">Imagen</label>
+                        <input type="text" name="file" th:field="*{imagen}" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2"/>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-400">Fecha de Lanzamiento</label>
+                        <input type="date" th:field="*{lanzamiento}" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2"/>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-6">
+                    <input type="submit" value="Crear Videojuego" class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110" />
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <footer th:replace="layout/layout :: footer" class="bg-gray-800 p-4 mt-8"></footer>
+</body>
+</html>

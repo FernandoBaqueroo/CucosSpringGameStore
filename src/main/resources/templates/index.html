@@ -1,0 +1,111 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="UTF-8" />
+    <title>Cucos Spring Game Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url("../imagenes/fondoIndex.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .slick-carousel {
+            width: 50%;
+            opacity: 0; 
+            transform: translateX(-20px);
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .company-info, .slick-carousel {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .additional-section {
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans">
+		<div th:replace="fragments/polygonsBackground :: polygons-background"></div>
+
+    <!-- Header y Nav -->
+    <header th:replace="layout/layout :: header" class="bg-gray-800 p-4 shadow-md"></header>
+
+    <!-- Primera Sección -->
+    <div class="flex flex-row-reverse gap-8 m-8">
+        <!-- Carrusel de imágenes -->
+        <div class="slick-carousel w-1/2">
+            <div th:each="videojuego, iterStat : ${videojuegos}" th:limit="${iterStat.index} lt 7" class="carousel-slide">
+                <img th:if="${#strings.length(videojuego.imagen) > 0}" th:src="${videojuego.imagen}" th:alt="${videojuego.titulo}" class="w-full h-auto object-cover rounded-lg shadow-lg">
+            </div>
+        </div>
+        <!-- Información de la empresa -->
+        <div class="company-info w-1/2">
+            <h2 class="text-4xl font-bold">Nuestra Empresa de Videojuegos</h2>
+            <p class="mt-4">
+                Somos líderes en la industria, ofreciendo los mejores títulos y una experiencia inigualable. Descubre lo último en entretenimiento interactivo con nosotros. Con una historia rica y diversa, nuestro compromiso con la innovación nos ha colocado en la vanguardia del entretenimiento digital. Nuestro equipo está dedicado a crear experiencias memorables para todos nuestros usuarios.
+            </p>
+            <!-- Botón para ir a la vista de listarVideojuegos -->
+            <a href="/listarVideojuegos" class="inline-block bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 text-white font-semibold px-8 py-3 mt-8 rounded-full shadow-md hover:from-purple-600 hover:to-blue-500 hover:shadow-lg transition-all duration-300 ease-in-out">Explora Nuestros Videojuegos</a>
+        </div>
+    </div>
+
+    <!-- Nueva Sección con Animación -->
+	<div class="additional-section mx-auto py-8 px-4" id="animatedSection">
+	    <h2 class="text-3xl font-bold text-center mb-6">Más Sobre Nosotros</h2>
+	    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+	        <div class="bg-opacity-10 bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out p-6 rounded-lg">
+	            <h3 class="text-xl font-semibold mb-4">Quiénes Somos</h3>
+	            <p>Un equipo apasionado por llevar el entretenimiento digital al siguiente nivel.</p>
+	        </div>
+	        <div class="bg-opacity-10 bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out p-6 rounded-lg">
+	            <h3 class="text-xl font-semibold mb-4">Datos de Ventas</h3>
+	            <p>Más de 1 millón de juegos vendidos en el último año.</p>
+	        </div>
+	        <div class="bg-opacity-10 bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out p-6 rounded-lg">
+	            <h3 class="text-xl font-semibold mb-4">Datos de Valoraciones</h3>
+	            <p>Promedio de valoración de 4.8/5 en todas las plataformas.</p>
+	        </div>
+	        <div class="bg-opacity-10 bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out p-6 rounded-lg">
+	            <h3 class="text-xl font-semibold mb-4">Nuestra Misión</h3>
+	            <p>Ofrecer experiencias de juego inolvidables y de alta calidad a gamers de todo el mundo.</p>
+	        </div>
+	    </div>
+	</div>
+
+
+    <!-- Footer -->
+    <footer th:replace="layout/layout :: footer" class="bg-gray-800 p-4 mt-8"></footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.company-info, .slick-carousel').css({'opacity': '1', 'transform': 'translateX(0)'});
+            $('.slick-carousel').slick({
+                autoplay: true,
+                autoplaySpeed: 2000,
+                dots: true,
+                arrows: false,
+                adaptiveHeight: true,
+            });
+
+            $(window).scroll(function() {
+                var scroll = $(window).scrollTop();
+                var offset = $('#animatedSection').offset().top - window.innerHeight;
+                if (scroll > offset) {
+                    $('#animatedSection').css('opacity', '1');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

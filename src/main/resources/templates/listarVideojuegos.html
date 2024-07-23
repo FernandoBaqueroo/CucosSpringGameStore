@@ -1,0 +1,76 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="UTF-8" />
+    <title> Cucos Spring Game Store</title>
+</head>
+<style>
+        .fade-in {
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<body class="bg-gray-900 text-gray-200 font-sans">
+	<div th:replace="fragments/polygonsBackground :: polygons-background"></div>
+    <!-- Header y Nav -->
+    <header th:replace="layout/layout :: header" class="bg-gray-800 p-4 shadow-md"></header>
+
+    <!-- Contenedor Principal -->
+    <div class="container mx-auto px-4 py-8">
+		<div class="mb-4">
+            <a th:href="@{/formVideojuegos}" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Crear Videojuego
+            </a>
+        </div>
+        <!-- Card -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+		  <div th:each="videojuego : ${videojuegos}" class="game-card transform transition duration-500 hover:scale-105 rounded-lg overflow-hidden shadow-lg bg-gradient-to-bl from-gray-700 to-gray-900">
+		    <!-- Game Image -->
+		    <img th:if="${#strings.length(videojuego.imagen) > 0}" th:src="@{${videojuego.imagen}}" th:alt="@{${videojuego.titulo}}" class="w-full h-64 object-cover object-center">
+		
+		    <!-- Game Details -->
+		    <div class="p-6 text-white">
+				<a th:href="@{/verVideojuego/} + ${videojuego.id}">
+		      		<h3 class="text-2xl font-bold mb-2" th:text="${videojuego.titulo}"></h3>
+                </a>
+		      <p class="text-gray-300 mb-3" th:text="${videojuego.desarrollador}"></p>
+		      <p class="text-lg font-bold mb-4" th:text="${videojuego.precio} + ' €'"></p>
+		      <!-- Edit and Delete Buttons -->
+		      <div class="flex justify-start items-center mt-4 space-x-2">
+				  <a th:href="@{/formVideojuegos/} + ${videojuego.id}" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
+				    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
+				      Editar
+				    </span>
+				  </a>
+				  <a th:href="@{/eliminarVideojuego/} + ${videojuego.id}" onclick="return confirm('¿Estás seguro que quieres eliminar?');" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300">
+				    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
+				      Eliminar
+				    </span>
+				  </a>
+				</div>
+		    </div>
+		  </div>
+		</div>
+
+        <!-- Paginator -->
+        <nav th:replace="paginator-nav :: paginator" class="mt-8"></nav>
+        
+    </div>
+    <!-- Footer -->
+    
+    <footer th:replace="layout/layout :: footer" class="bg-gray-800 p-4 mt-8"></footer>
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const cards = document.querySelectorAll('.game-card');
+        cards.forEach(card => card.classList.add('fade-in'));
+    });
+    
+</script>

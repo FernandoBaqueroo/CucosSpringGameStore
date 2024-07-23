@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Factura</title>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1A202C;
+            color: #E2E8F0;
+        }
+        
+        .btn {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div th:replace="fragments/polygonsBackground :: polygons-background"></div>
+    <!-- Header y Nav -->
+    <header th:replace="layout/layout :: header" class="bg-gray-800 p-4 shadow-md"></header>
+
+    <!-- Contenedor Principal -->
+    <div class="container mx-auto px-4 py-8">
+        <div data-aos="fade-up" class="max-w-4xl mx-auto">
+            <!-- Tarjeta de Cliente -->
+            <div class="card p-5 mb-8 rounded-lg shadow-lg">
+                <div class="flex items-center space-x-4">
+                    <img th:if="${#strings.length(cliente.foto) > 0}" th:src="@{'/uploads/' + ${cliente.foto}}" alt="Foto del Cliente" class="w-24 h-24 rounded-full border-2 border-gray-800">
+                    <div>
+                        <h2 class="text-2xl font-semibold" th:text="${cliente.nombre} + ' ' + ${cliente.apellido}">Nombre del Cliente</h2>
+                        <p th:text="${cliente.email}">Email del Cliente</p>
+                        <p th:text="${cliente.createAt}">Fecha de Registro</p>
+                    </div>
+                </div>
+           		<a th:href="@{'/factura/form/' + ${cliente.id}}" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
+				    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
+				      Crear facturas
+				    </span>
+				  </a>
+            </div>
+
+            <!-- Sección de Facturas -->
+            <div class="card p-5 rounded-lg shadow-lg" data-aos="fade-up">
+                <h3 class="text-2xl font-semibold mb-4">Facturas Asignadas</h3>
+                <div th:if="${#lists.isEmpty(cliente.facturas)}" class="alert alert-info">No hay facturas asignadas a este cliente.</div>
+                <div th:if="${not #lists.isEmpty(cliente.facturas)}" class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-400">
+                        <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Folio</th>
+                                <th scope="col" class="px-6 py-3">Descripción</th>
+                                <th scope="col" class="px-6 py-3">Fecha</th>
+                                <th scope="col" class="px-6 py-3">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="factura : ${cliente.facturas}" class="bg-gray-800 border-b">
+                                <td class="px-6 py-4" th:text="${factura.id}"></td>
+                                <td class="px-6 py-4" th:text="${factura.descripcion}"></td>
+                                <td class="px-6 py-4" th:text="${factura.createAt}"></td>
+                                <td class="px-6 py-4" th:text="${factura.total}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center p-4 mt-8">
+        © 2024 Empresa
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>

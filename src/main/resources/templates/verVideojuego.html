@@ -1,0 +1,30 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+	<title>Cucos Spring Game Store</title>
+</head>
+<script src="https://cdn.tailwindcss.com"></script>
+<body class="bg-gray-900 text-gray-200">
+    <header th:replace="layout/layout :: header"></header>
+    <div th:replace="fragments/polygonsBackground :: polygons-background"></div>
+    <div class="container mx-auto py-8 lg:py-12 mb-20">
+        <div class="max-w-6xl mx-auto bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div class="lg:flex">
+                <div class="lg:w-1/2">
+                    <img th:if="${#strings.length(videojuego.imagen)>0}" th:src="${videojuego.imagen}" th:alt="${videojuego.titulo}" class="h-auto w-full lg:h-full object-cover">
+                </div>
+                <div class="p-8 lg:w-1/2">
+                    <div class="uppercase tracking-wide text-sm text-indigo-400 font-semibold" th:text="${videojuego.titulo}"></div>
+                    <p class="block mt-4 text-xl leading-tight font-medium text-white" th:text="${videojuego.desarrollador}"></p>
+                    <p class="mt-2 text-gray-400 text-lg" th:text="'Precio: ' + ${videojuego.precio}"></p>
+                    <p class="mt-2 text-gray-400 text-lg" th:text="'Plataforma: ' + ${videojuego.plataforma}"></p>
+                    <p class="mt-2 text-gray-400 text-lg" th:text="'Categoria: ' + ${videojuego.categoria}"></p>
+                    <p class="mt-2 text-gray-400 text-lg" th:text="'Fecha de Lanzamiento: ' + ${videojuego.lanzamiento}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer th:replace="layout/layout :: footer"></footer>
+</body> 
+</html>

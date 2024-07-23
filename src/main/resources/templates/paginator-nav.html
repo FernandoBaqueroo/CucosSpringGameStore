@@ -1,0 +1,24 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200">
+    <nav th:fragment="paginator" aria-label="Page navigation" class="flex justify-center mt-10">
+        <ul class="flex list-none rounded-md overflow-hidden bg-gray-700 shadow-lg">
+            <!-- Primera página -->
+            <li th:classappend="${page.first ? 'opacity-50' : 'hover:bg-gray-600'}">
+                <a href="#" th:href="@{${page.url}(page=0)}" class="py-2 px-4 block leading-tight text-gray-300" th:classappend="${page.first ? 'cursor-not-allowed' : 'cursor-pointer'}">Primera</a>
+            </li>
+            <!-- Números de página -->
+            <li th:each="item : ${page.paginas}" th:classappend="${item.actual ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}">
+                <a href="#" th:href="@{${page.url}(page=${item.numero-1})}" class="py-2 px-4 block leading-tight" th:classappend="${item.actual ? 'text-white' : 'text-gray-300'}" th:text="${item.numero}"></a>
+            </li>
+            <!-- Última página -->
+            <li th:classappend="${page.last ? 'opacity-50' : 'hover:bg-gray-600'}">
+                <a href="#" th:href="@{${page.url}(page=${page.totalPaginas-1})}" class="py-2 px-4 block leading-tight text-gray-300" th:classappend="${page.last ? 'cursor-not-allowed' : 'cursor-pointer'}">Última</a>
+            </li>
+        </ul>
+    </nav>
+</body>
+</html>

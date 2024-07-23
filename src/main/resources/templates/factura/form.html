@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <title>Cucos Spring Game Store</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .form-input:focus {
+            outline: none;
+            border: 2px solid transparent;
+            box-shadow: 0 0 0 2px #4f46e5;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .scale-up-center {
+            animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+        }
+
+        @keyframes scale-up-center {
+            0% { transform: scale(0.5); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-900 text-gray-200 min-h-screen fade-in">
+    <div th:replace="fragments/polygonsBackground :: polygons-background"></div>
+
+    <header th:replace="layout/layout :: header" class="bg-gray-800 p-4 shadow-md"></header>
+
+    <div class="container mx-auto py-8">
+        <div class="max-w-4xl mx-auto bg-gray-800 shadow-lg rounded-lg overflow-hidden scale-up-center">
+            <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-6 py-4">
+                <h2 class="text-2xl font-bold text-white mb-2" th:text="${titulo}">Detalles de Factura</h2>
+            </div>
+            <form action="/factura/form" th:object="${factura}" method="post" class="p-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-white font-semibold block mb-2">Cliente:</label>
+                        <input th:value="${factura.cliente.nombre} + ' ' + ${factura.cliente.apellido}" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2" disabled>
+                    </div>
+                    <div>
+                        <label class="text-white font-semibold block mb-2">Descripción:</label>
+                        <textarea th:field="*{descripcion}" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-white font-semibold block mb-2">Observación:</label>
+                        <textarea th:field="*{observacion}" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-white font-semibold block mb-2">Buscar videojuego:</label>
+                        <input type="text" name="buscar_videojuegos" id="buscar_videojuegos" class="form-input mt-1 block w-full bg-gray-700 border-none rounded-md text-gray-300 p-2">
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <table th:replace="factura/plantilla-items :: itemsFactura" class="w-full text-white mt-4"></table>
+
+                    <div class="w-full mt-4 overflow-hidden rounded-lg shadow-md">
+                        <table id="cargarItemsVideojuegos" class="w-full text-sm text-left text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-700">
+                                <tr>
+                                    <th class="px-6 py-4 whitespace-nowrap text-white">Titulo</th>
+                                    <th class="px-6 py-4 whitespace-nowrap text-white">Precio unitario</th>
+                                    <th class="px-6 py-4 whitespace-nowrap text-white">Cantidad</td>
+                                    <th class="px-6 py-4 whitespace-nowrap text-white">Total</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-6">
+                    <input type="submit" th:value="${titulo}" class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer th:replace="layout/layout :: footer" class="bg-gray-800 p-4 mt-8"></footer>
+
+    <script th:replace="factura/js/autocomplete-videojuegos :: javascript"></script>
+</body>
+</html>
